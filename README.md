@@ -14,6 +14,8 @@ Verilator
 
 Vivado ML 2023.2
 
+gtkwave v3.3.104
+
 # How to use
 Repository tree는 다음과 같이 구성 되었습니다.
 
@@ -22,6 +24,9 @@ Repository tree는 다음과 같이 구성 되었습니다.
 * include : include files, macro files
 
 본인의 코드를 자유롭게 src 및 tb에 추가해서 Build, Simulation 해 볼수 있습니다.
+코드에 관해 더 좋은 아이디어가 있으면 Pull Request를 통해 기여 해주세요.
+test 예제는 tb/verilator/tb_example 에 있습니다.
+가장 간단한 예시로, tb_src 폴더에 tb_spram.sv 파일을 추가한 뒤 make 하시면 됩니다.
 
 # License
 본 repo는 누구나 자유롭게 사용할 수 있습니다.
