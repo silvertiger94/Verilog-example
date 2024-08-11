@@ -30,7 +30,7 @@ TB_DIR = $(MAKEFILE_PATH)../../tb_src
 SRCS = $(notdir $(wildcard $(SRC_DIR)/*.sv))
 TB_SRCS = $(notdir $(wildcard $(TB_DIR)/*.sv))
 
-TOP =tb_top
+TOP = $(basename $(notdir $(wildcard $(TB_DIR)/*.sv)))
 
 ######################################################################
 # Generate C++ in executable form
@@ -100,7 +100,7 @@ run:verilate
 	@echo "-- RUN ---------------------"
 	@rm -rf logs
 	@mkdir -p logs
-	obj_dir/Vtb_top $(VERILATOR_ARGS)
+	obj_dir/V$(TOP) $(VERILATOR_ARGS)
 
 cov:run
 	@echo

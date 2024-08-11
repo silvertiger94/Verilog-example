@@ -1,33 +1,45 @@
 `include "include.svh"
 
-module tb_top;
+module tb_spram;
   logic clk;
   logic resetn;
   logic [1:0] addr;
   logic [31:0] din;
   logic wen;
+  logic en;
 
   logic [31:0] dout;
+
+  event init;
 
   // Place on your DUT
   spram #(
       .DATA_WIDTH(32),
       .WORD_DEPTH(2)
   ) u_dut (
+      din,
+      addr,
+      wen,
+      en,
       clk,
       resetn,
-      addr,
-      din,
-      wen,
+
       dout
   );
 
-  // Test Sequence
   initial begin
+    en = 1;
     clk = 1;
     resetn = 0;
-    #10 resetn = 1;
+    #10;
+    ->init;
     #1000 $finish;
+  end
+
+  // Test Sequence
+  // Initial Begin
+  always @(init) begin
+    resetn <= 1;
   end
 
   always #1 clk = ~clk;
