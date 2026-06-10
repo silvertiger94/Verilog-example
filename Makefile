@@ -1,7 +1,10 @@
 ######################################################################
 # Usage
-# make
+# Applying the UVM Testbench (tb_top) to a Specified Top-Level Module:
 # make TOP=fifo
+#
+# Applying simple testbench:
+# make TB_TOP=tb_fifo_reg
 ######################################################################
 
 ######################################################################
@@ -39,12 +42,12 @@ UVM_DIR       = $(MAKEFILE_PATH)/third_party/uvm-verilator/src
 
 SRCS    := $(notdir $(wildcard $(SRC_DIR)/*.sv))
 LIBS    := $(notdir $(wildcard $(LIB_DIR)/*.sv))
+TB_SRCS := $(notdir $(wildcard $(TB_DIR)/simple_tb/*.sv)) $(TB_COMMON_DIR)/tb_top.sv
 
 TOP    ?= sdpram
-TB_TOP := tb_top
+TB_TOP ?= tb_top
 TIMESTAMP := $(shell date +%Y%m%d_%H%M%S)
-OUT_DIR   := $(MAKEFILE_PATH)/sim/verilator/$(TB_TOP)_$(TIMESTAMP)
-
+OUT_DIR   := $(MAKEFILE_PATH)/sim/verilator/$(TB_TOP)$(if $(filter tb_top,$(TB_TOP)),_$(TOP))_$(TIMESTAMP)
 ######################################################################
 # Generate C++ in executable form
 VERILATOR_FLAGS += -cc --exe
@@ -84,13 +87,15 @@ VERILATOR_FLAGS += --vpi
 # Command line Define
 # Note: This flags are needed because the verilator has compile error "with dpi options"
 VERILATOR_FLAGS += +define+UVM_NO_DPI
+# Common TB_TOP define
+VERILATOR_FLAGS += +define+$(TOP)
 # Run Verilator in debug mode
 #VERILATOR_FLAGS += --debug
 # Add this trace to get a backtrace in gdb
 #VERILATOR_FLAGS += --gdbbt
 
 # Input files for Verilator
-VERILATOR_INPUT = $(UVM_DIR)/uvm_pkg.sv $(LIBS) $(SRCS) $(TB_COMMON_DIR)/tb_top.sv
+VERILATOR_INPUT = $(UVM_DIR)/uvm_pkg.sv $(LIBS) $(SRCS) $(TB_SRCS)
 
 # Command Line Arguments
 VERILATOR_ARGS = +trace

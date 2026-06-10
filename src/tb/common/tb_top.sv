@@ -8,6 +8,8 @@ module tb_top;
   clock_reset_if u_clock_reset_if ();
   generic_dut_if u_generic_dut_if ();
 
+  // DUT assigned by +define
+`ifdef sdpram
   sdpram #(
       .DATA_WIDTH(32),
       .WORD_DEPTH(2)
@@ -22,6 +24,19 @@ module tb_top;
       .enb   (u_generic_dut_if.en_b),
       .doutb (u_generic_dut_if.data_out)
   );
+`endif
+
+`ifdef multi_port_mux
+
+`endif
+
+`ifdef fifo_reg
+
+`endif
+
+`ifdef tcam
+
+`endif
 
   // Print some stuff as an example
   initial begin
